@@ -7,7 +7,7 @@ class Moisture:
     max: int
     sensor: ADC
     conversion_factor = 3.3 / (65535)
-    lastRead = 0
+    lastRead = -1
     lastMeasure = 0
 
     def __init__(self, adc: int = 26, min: int = 18657,  max: int = 48488) -> None:
@@ -34,5 +34,5 @@ class Moisture:
         return self.lastMeasure
 
     def Read(self) -> None:
-        if (utime.time() - self.lastRead) > 60:
+        if (utime.time() - self.lastRead) > 60 or self.lastMeasure == -1:
             self.lastMeasure = self.sensor.read_u16()
